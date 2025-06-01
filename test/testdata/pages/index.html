@@ -1,0 +1,25 @@
+{{define "main"}}
+<h1>Welcome</h1>
+<p>Here's an example which uses templates to populate a grid:</p>
+<ul class="grid">
+  {{template "grid-entry" (map "Title" "Elf Music" "Artist"
+  "Icebeing" "EmbedCode" "385322296" "Url"
+  "https://icebeing.bandcamp.com/album/elf-music" )}}
+  {{template "grid-entry" (map "Title" " Pour l'amour des insectes " "Artist" "Clay Monke"
+  "EmbedCode" "748947667" "Url"
+  "https://claymonke.bandcamp.com/album/pour-lamour-des-insectes")}}
+</ul>
+{{end}}
+
+{{define "grid-entry"}}
+<li>
+  <div class="grid-item-label">
+    <a href="{{.Url}}">{{.Artist}}: <br />{{.Title}}</a>
+  </div>
+  <div class="grid-iframe-container">
+    <iframe src="https://bandcamp.com/EmbeddedPlayer/album={{.EmbedCode}}/size=large/bgcol=000000/linkcol=0687f5/minimal=true/transparent=true/" seamless>
+      <a href="{{.Url}}">{{.Title}} by {{.Artist}}</a>
+    </iframe>
+  </div>
+</li>
+{{end}}

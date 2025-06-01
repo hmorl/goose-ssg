@@ -1,0 +1,7 @@
+{{define "nav-link-basic"}}
+<a href="{{.Url}}">{{.Text}}</a>
+{{end}}
+
+{{define "nav-link"}}
+<a href="{{.Url}}" {{if eq .Root.ThisPage .Url }}class="nav-active" {{end}}>{{.Text}}</a>
+{{end}}

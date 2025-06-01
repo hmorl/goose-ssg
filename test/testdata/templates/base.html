@@ -1,0 +1,32 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <title>GOose-ssg Example Site</title>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    {{block "head" .}}{{end}}
+  </head>
+
+  <body>
+    <header>
+      <span class="site-header">Example Site</span>
+      <nav class="site-nav">
+        {{template "nav-link" (map "Url" "/" "Text" "Home")}} | 
+        {{template "nav-link" (map "Url" "/about" "Text" "About")}} |
+      </nav>
+    </header>
+
+    <main>
+      {{block "main".}}{{end}}
+    </main>
+
+    <footer>
+      <p>&copy; Copyright notice</p>
+      <p>Site built with <a href="https://github.com/hmorl/GOose-ssg">GOose SSG</a></p>
+    </footer>
+  </body>
+</html>
+{{end}}

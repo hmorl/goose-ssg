@@ -1,0 +1,75 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+main {
+  padding: 1rem;
+}
+
+header, footer {
+  padding: 1rem;
+  text-align: center;
+}
+
+.site-header {
+  text-transform: lowercase;
+  letter-spacing: 0.25rem;
+  font-style: italic;
+  font-size: 38px;
+  margin: 1rem;
+}
+
+.site-nav {
+  margin: 1rem;
+}
+
+.nav-active::before {
+  content: "👉";
+}
+
+.nav-active::after {
+  content: "👈";
+}
+
+.grid {
+  text-align: center;
+  margin: 0 auto 0 auto;
+  display: grid;
+  width: 100%;
+  gap: 2rem;
+  max-width: 720px;
+  padding: 1rem;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid > li {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  list-style: none;
+  box-sizing: border-box;
+  padding: 1rem;
+  margin: 0;
+}
+
+.grid-iframe-container > iframe {
+  aspect-ratio: 1;
+  width: 100%;
+  border: none;
+  display: block;
+}
+
+.grid-item-label {
+  margin-bottom: 1rem;
+}
