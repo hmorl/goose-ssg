@@ -46,7 +46,8 @@ func main() {
 			close(quitChan)
 		}()
 
-		server.ServeAndWatch(destinationPath, sourceDir, func() {
+		sourceDirs := []string{templatesPath, staticContentPath, pagesPath}
+		server.ServeAndWatch(destinationPath, sourceDirs, func() {
 			log.Println("--- Change detected!")
 
 			err := internal.RebuildSite(pagesPath, staticContentPath, templatesPath, destinationPath)

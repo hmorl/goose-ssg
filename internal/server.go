@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
@@ -52,7 +53,7 @@ func (s *Server) handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func watchDir(dir string, onChange func(), debounceTime time.Duration) {
+func watchDirs(dirs []string, onChange func(), debounceTime time.Duration) {
 	var debounceTimer *time.Timer
 
 	resetTimer := func() {
@@ -97,19 +98,21 @@ func watchDir(dir string, onChange func(), debounceTime time.Duration) {
 		}
 	}()
 
-	filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if info.IsDir() {
-			err = watcher.Add(path)
+	for _, dir := range dirs {
+		filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {
 			if err != nil {
-				log.Fatalln(err)
+				return err
 			}
-		}
-		return nil
-	})
+
+			if entry.IsDir() {
+				err = watcher.Add(path)
+				if err != nil {
+					log.Fatalln(err)
+				}
+			}
+			return nil
+		})
+	}
 
 	<-done
 }
@@ -168,7 +171,7 @@ func handlerWithReloadInjection(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (s *Server) ServeAndWatch(dirToServe string, dirToWatch string, onFileChange func(), quit chan struct{}) {
+func (s *Server) ServeAndWatch(dirToServe string, dirsToWatch []string, onFileChange func(), quit chan struct{}) {
 	go func() {
 		http.HandleFunc("/", handlerWithReloadInjection)
 		http.HandleFunc("/ws", s.handleWebSocket)
@@ -180,7 +183,7 @@ func (s *Server) ServeAndWatch(dirToServe string, dirToWatch string, onFileChang
 		}
 	}()
 
-	go watchDir(dirToWatch, func() {
+	go watchDirs(dirsToWatch, func() {
 		onFileChange()
 		s.broadcastReload()
 	}, 300*time.Millisecond)
