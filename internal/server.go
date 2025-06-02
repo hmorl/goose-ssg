@@ -81,6 +81,10 @@ func watchDir(dir string, onChange func(), debounceTime time.Duration) {
 					return
 				}
 
+				if strings.HasPrefix(filepath.Base(event.Name), ".") {
+					break
+				}
+
 				if event.Op&(fsnotify.Write|fsnotify.Create|fsnotify.Remove|fsnotify.Rename) != 0 {
 					resetTimer()
 				}
